@@ -1,0 +1,152 @@
+﻿@using TratieShop.Models;
+@{
+    TraTieShopContext context = new TraTieShopContext();
+    List<OrderDetail> orderDetails = ViewBag.Cart;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-danger:hover {
+                background-color: #bd2130;
+            }
+    </style>
+</head>
+<body>
+    @if(ViewBag.delete!=null){
+        <script>
+            swal({
+                title: "Xóa Sản phẩm khỏi giỏ hàng thành công",
+                icon: "success",
+                text: "Sản Phẩm đã được xóa khỏi giỏ hàng!",
+                confirmButtonText: "Xác nhận"
+            });
+        </script>
+    }
+    @Html.Partial("Header")
+    <div class="container" style="margin:200px;">
+        <a href="/Home/listProduct">
+            <button class="btn-secondary">List Product</button>
+        </a>
+        <table>
+            <thead>
+                <tr>
+                    <th>ProductName</th>
+                    <th>UnitPrice</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            @{
+                decimal sum = 0; // Initialize sum as decimal
+                int Index = 0;
+            }
+            <tbody id="tb_conten">
+                <form id="UpdateCart" action="/Home/UpdateCart" onchange="submitForm()" method="post" style="border: 2px;">
+                    @foreach (OrderDetail item in ViewBag.Cart)
+                    {
+                        Product product = context.Products.FirstOrDefault(x => x.ProductId == item.ProductId);
+                    if (product.UnitPrice != null && item!=null) // Check if UnitPrice is not null
+                        {
+                        sum += product.UnitPrice.Value * (int)item?.Quantity;
+                    }
+                        <input type="hidden" name="proID" value="@product.ProductId" />
+                    <tr>
+                        <td>@product.ProductName</td>
+                        <td><div name="UnitPrice" value="@product.UnitPrice">@double.Parse(product.UnitPrice.ToString()) VNĐ</div></td>
+                        <td><input type="number" onchange="submitForm()" min="1" max="@product.UnitinStock" name="quantity" value="@item.Quantity" /></td>
+                            @{
+                                var subtotal = product.UnitPrice * item.Quantity;
+                            }
+                        <td><div name="subtotal" value="@(product.UnitPrice * item.Quantity)">@double.Parse(subtotal.ToString()) VNĐ</div></td>
+                        <td>
+                            <a href="/Home/DeleteCart?Id=@item.ProductId" class="btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                }
+                </form>
+                <script>
+                    function submitForm() {
+                        document.getElementById("UpdateCart").submit();
+                    }
+                </script>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div>ToTal:</div></td>
+                    <td><div name="total" value="@sum">@double.Parse(sum.ToString()) VNÐ</div></td>
+                </tr>
+
+            </tbody>
+        </table>
+        @if (orderDetails.Count > 0)
+        {
+            <a href="/Home/CheckOut">
+                <button class="btn-secondary" style="    position: fixed;
+           right: 250px;
+          margin-top: 20px;">
+                    Checkout
+                </button>
+            </a>
+        }
+    </div>
+</body>
+</html>

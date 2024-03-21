@@ -1,0 +1,418 @@
+﻿@using TratieShop.Models;
+@using Newtonsoft.Json;
+@{
+    var account = Context.Session.GetString("account");
+    User user = null;
+    if (!string.IsNullOrEmpty(account))
+    {
+        user = JsonConvert.DeserializeObject<User>(account);
+    }
+    List<Category> categories = ViewBag.Categories;
+    List<Product> products = ViewBag.Products;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="fonts/fontawesome-free-6.4.0-web/css/all.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .col-md-3 {
+            float: left;
+            width: 25%;
+        }
+
+        .col-md-9 {
+            float: left;
+            width: 75%;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .list-group {
+            list-style: none;
+            padding: 0;
+        }
+
+        .list-group-item {
+            border: 1px solid #ddd;
+            margin-bottom: -1px;
+        }
+
+            .list-group-item a {
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                color: #333;
+            }
+
+                .list-group-item a:hover {
+                    background-color: #f4f4f4;
+                }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .btn-primary {
+            background-color: #D19C97;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn-primary:hover {
+                background-color: #D19C97;
+            }
+
+
+        html {
+            overflow-x: hidden;
+        }
+
+        .header_menu {
+            z-index: 100;
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
+
+        #header {
+            justify-content: space-around;
+            display: flex;
+            align-items: center;
+            background-color: #D19C97;
+        }
+
+        #header_left img {
+            width: 30%;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 5px 10px 5px 10px;
+        }
+
+        .slogan_name {
+            font-family: Harrington;
+        }
+
+        #header_left {
+            text-decoration: none;
+            color: black;
+            width: 30%;
+            display: flex;
+            align-items: center;
+        }
+
+        #header_middle button {
+            margin-left: -5px;
+            padding: 4px;
+            background-color: #D19C97;
+        }
+
+        #header_middle input {
+            width: 300px;
+            padding: 4px 50px 4px 0px;
+        }
+
+        #header_middle {
+            display: flex;
+            width: 30%;
+        }
+
+        #header_right i {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        #header_right {
+            width: 25%;
+            display: flex;
+            justify-content: space-around;
+        }
+
+            #header_right a {
+                text-decoration: none;
+                color: black;
+            }
+
+        #menu {
+            background-color: #ba6a62;
+            max-width: 100%;
+        }
+
+        #main-menu {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+
+            #main-menu li a {
+                text-decoration: none;
+                color: black;
+                display: block;
+                padding: 10px 70px;
+            }
+
+            #main-menu li:hover {
+                background-color: rgb(236, 233, 233);
+            }
+
+            #main-menu li {
+                position: relative;
+            }
+
+        #edit_info {
+            width: 200px;
+            height: 500px;
+            background-color: rgb(236, 230, 222);
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+            #edit_info li a {
+                text-decoration: none;
+                color: black;
+                display: block;
+                padding: 15px 10px;
+                text-align: center;
+            }
+
+            #edit_info li:hover {
+                background-color: rgb(236, 233, 233);
+            }
+
+        #info_display {
+            display: flex;
+        }
+
+        #info_display_content {
+            width: 100%;
+        }
+
+            #info_display_content table {
+                width: 100%;
+                text-align: center;
+            }
+
+        .banner {
+            margin-top: 190px;
+            width: 100%;
+        }
+
+            .banner a {
+                display: block;
+            }
+
+        .mySlides {
+            width: 90%;
+            height: 500px;
+            margin: 0 auto;
+        }
+
+        #sub_header_right {
+            position: relative;
+        }
+
+        .menu_login {
+            position: absolute;
+            margin-top: 0px;
+            margin-left: 0px;
+            background-color: rgb(236, 233, 233);
+            display: none;
+            z-index: 2;
+        }
+
+            .menu_login li {
+                display: flex;
+                align-items: center;
+                margin-left: -40px;
+                border: 1px solid black;
+                box-sizing: border-box;
+                width: 150px;
+                height: 30px;
+            }
+
+                .menu_login li a {
+                }
+
+        #sub_header_right:hover .menu_login {
+            display: block;
+        }
+
+        #listProduct {
+            box-shadow: 3px 3px 3px 3px gainsboro;
+            padding: 3px;
+            border-radius: 20px;
+            margin-top: 3px;
+            margin-left: 5%;
+            margin-right: 5%;
+            font-family: arial;
+        }
+
+        .productHeader {
+            text-align: left;
+        }
+
+        .productInfo {
+            padding-left: 0px;
+            display: flex;
+            /*    justify-content: space-around;*/
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+            .productInfo li {
+                width: 20%;
+                margin-left: 4%;
+                text-align: center;
+                margin-bottom: 25px;
+                height: 350px;
+                border: 1px solid black;
+                border-radius: 20px;
+                box-shadow: 3px 3px 3px 3px rgb(236, 233, 233);
+            }
+
+                .productInfo li img {
+                    border-radius: 20px;
+                    padding: 10px;
+                    width: 200px;
+                    height: 200px;
+                }
+
+                .productInfo li a {
+                    text-decoration: none;
+                }
+
+                .productInfo li:hover {
+                    background: rgb(236, 233, 233);
+                }
+
+            .productInfo p {
+                margin: 5px;
+                color: blue;
+                font-size: 15px;
+                font-weight: 600;
+                color: black;
+                padding-bottom: 10px;
+            }
+
+            .productInfo .old {
+                font-size: 13px;
+                text-decoration: line-through;
+                color: grey;
+            }
+
+            .productInfo .oldPrice {
+                font-size: 13px;
+            }
+
+            .productInfo .discount {
+                background-color: red;
+                margin-left: 3px;
+                padding: 2px;
+                font-size: 10px;
+                border: 1px solid red;
+                border-radius: 20px;
+                width: 10px;
+            }
+
+        .listProductSearch {
+            margin-top: 200px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header_menu">
+        <div id="header">
+            <a href="/Home/listProduct" id="header_left">
+                <img src="images/logo.png" alt="">
+                <div class="slogan">
+                    <h2 class="slogan_nameshop">TratieShop</h2>
+                    <p class="slogan_name">Bước đi đến thành công</p>
+                </div>
+            </a>
+
+            <div id="header_middle">
+                <form action="/Home/searchProductURL" method="post">
+                    <input type="text" class="header_middle_search" name="key" value="@(ViewBag.key!=null?ViewBag.key:"")" placeholder="Nhập thông tin bạn muốn tìm kiếm">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div id="header_right">
+                @if (account != null)
+                {
+                    <a href="/Home/Cart"><i class="fa-solid fa-cart-plus"></i>Giỏ hàng</a>
+                    <div id="sub_header_right">
+                        <a href=""><i class="fa-solid fa-user"></i> @(user == null ? "" : user.FullName)</a>
+                        <ul class="menu_login">
+                            <li><a href="/Home/ViewProfile">Thông tin cá nhân</a></li>
+                            <li><a href="/Home/ChangePassword">Thay đổi mật khẩu</a></li>
+                            <li><a href="/Home/MyPurchaseURL">Đơn mua</a></li>
+                            <li><a href="/Home/longOut">Logout</a></li>
+                        </ul>
+                    </div>
+                }
+                @if (account == null)
+                {
+                    <a href="/Home/login"><i class="fa-solid fa-cart-plus"></i>Giỏ hàng</a>
+                    <a href="/Home/login"><i class="fa-solid fa-user"></i>Đăng nhập</a>
+                }
+            </div>
+        </div>
+        <div id="menu">
+            <nav>
+                <ul id="main-menu">
+                    <li><a href="/Home/listProduct?cateID=1">Nike</a></li>
+                    <li><a href="/Home/listProduct?cateID=2">Adidas</a></li>
+                    <li><a href="/Home/listProduct?cateID=3">Vans</a></li>
+                    <li><a href="/Home/listProduct?cateID=4">MLB</a></li>
+                    <li><a href="/Home/listProduct?cateID=5">Converse</a></li>
+                    <li><a href="/Home/listProduct?cateID=6e">New Balance</a></li>
+                    <li><a href="/Home/listProduct?cateID=7">Phụ Kiện</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</body>
+</html>

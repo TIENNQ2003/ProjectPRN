@@ -1,0 +1,145 @@
+﻿@using TratieShop.Models;
+@{
+    List<Category> categories = ViewBag.Category;
+    Product newPro = ViewBag.Product;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+    <style>
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-danger:hover {
+                background-color: #bd2130;
+            }
+
+        .form {
+            margin: 0 auto;
+            width: 80%;
+            border: 1px black solid;
+            border-radius: 40px;
+            background-color: #D19C97;
+        }
+
+        .form_title {
+            text-align: center;
+        }
+
+        .form_info {
+            padding: 0 auto;
+        }
+
+        .input_title {
+            width: 30%;
+        }
+
+        .form_layout {
+            width: 80%;
+            margin: 0 auto;
+            text-align: left;
+            padding-bottom: 2%;
+        }
+
+        .input_info input, select {
+            width: 100%;
+            display: block;
+            border-radius: 40px;
+            height: 25px;
+        }
+
+        .input_info input {
+            margin-top: 10px;
+        }
+
+        .input_info_radio input {
+            width: 20%;
+            margin: 20px 0px 30px 0px;
+        }
+
+        .input_info_radio {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            text-align: center;
+        }
+
+            .button input {
+                width: 100px;
+                padding: 5px;
+                border-radius: 40px;
+            }
+    </style>
+</head>
+<body>
+    <div class="form">
+        <a href="/Home/AdminPage?id=2">
+            <button style="margin-left: 29px;
+    margin-top: 20px;" class="btn-secondary">
+                List Product
+            </button>
+        </a>
+        <h1 class="form_title">Add new a Product</h1>
+        <form class="form_info" action="/Home/UpdateProductURL" method="post" style="border: 2px;">
+            <input type="hidden" name="pid" value="@(newPro!=null?newPro.ProductId:"")" />
+            <table class="form_layout">
+                <tr class="form_detail">
+                    <td class="input_title">ProductName:</td>
+                    <td class="input_info"><input value="@(newPro!=null?newPro.ProductName:"")" type="text" name="ProductName" /></br></td>
+                </tr>
+                <tr class="form_detail">
+                    <td class="input_title">Category:</td>
+                    <td class="input_info">
+                        <select name="CategoryID">
+                            @foreach (Category category in categories)
+                            {
+                                <option value="@category.CategoryId" @(newPro != null && newPro.CategoryId == category.CategoryId ? "selected" : "")>@category.CategoryName</option>
+                            }
+                        </select></br>
+                    </td>
+                </tr>
+                <tr class="form_detail">
+                    <td class="input_title">Description:</td>
+                    <td class="input_info"><input value="@(newPro!=null?newPro.Description:"")" type="text" name="Descrsiption" /></br></td>
+                </tr>
+                <tr class="form_detail">
+                    <td class="input_title">UnitPrice:</td>
+                    <td class="input_info"> <input value="@(newPro!=null?newPro.UnitPrice:"")" type="number" name="UnitPrice" /></br></td>
+                </tr>
+                <tr class="form_detail">
+                    <td class="input_title">UnitinStock:</td>
+                    <td class="input_info"><input value="@(newPro!=null?newPro.UnitinStock:"")" type="number" name="UnitInStock" /></br></td>
+                </tr>
+                <tr class="form_detail">
+                    <td class="input_title">Discount:</td>
+                    <td class="input_info"><input value="@(newPro!=null?newPro.Discount:"")" type="number" name="Discount" /></br></td>
+                </tr>
+                <tr class="form_detail">
+                    <td class="input_title"> Status:</td>
+                    <td class="input_info_radio">
+                        <input type="radio" name="Status" value="1" @(newPro != null && newPro.Status == 1 ? "checked" : "") />continued
+                        <input type="radio" name="Status" value="0" @(newPro != null && newPro.Status == 0 ? "checked" : "") />discontinued
+                        </br>
+                    </td>
+                </tr>
+                <td><div style="font-weight: 600; color: red;font-size: 20px;">@ViewBag.Message</div></td>
+                <tr>
+                </tr>
+                <tr class="button">
+                    <td><input type="submit" name="submit" value="Change" /></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</body>
+</html>

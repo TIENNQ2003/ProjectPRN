@@ -1,0 +1,268 @@
+﻿@using TratieShop.Models;
+@using Newtonsoft.Json;
+@{
+    var account = Context.Session.GetString("account");
+    User user = null;
+    if (!string.IsNullOrEmpty(account))
+    {
+        user = JsonConvert.DeserializeObject<User>(account);
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+    <link rel="stylesheet" href="fonts/fontawesome-free-6.4.0-web/css/all.css">
+    <style>
+        .form_title {
+            text-align: center;
+        }
+
+        .form_info {
+            padding: 0 auto;
+        }
+
+        .input_title {
+            width: 30%;
+        }
+
+        .form_layout {
+            width: 80%;
+            margin: 0 auto;
+            text-align: left;
+            padding-bottom: 2%;
+        }
+
+        .input_info input,
+        select {
+            padding-left: 10px;
+            width: 100%;
+            display: block;
+            border-radius: 40px;
+            height: 25px;
+        }
+
+        .input_info_radio input {
+            width: 20%;
+        }
+
+        .input_info_radio {
+            margin-bottom: 20px;
+        }
+
+        .button {
+            text-align: center;
+        }
+
+            .button input {
+                width: 100px;
+                padding: 5px;
+                border-radius: 40px;
+            }
+
+        #info_user {
+            margin-top: 190px;
+            display: block;
+            display: flex;
+        }
+
+        #info_user_manager {
+            width: 17%;
+        }
+
+        #info_user_info_detail {
+            width: 70%;
+        }
+
+        .info_user_manager_icon {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+            .info_user_manager_icon i {
+                font-size: 100px;
+                padding-right: 10px;
+            }
+
+        .form_header {
+            margin-left: 20px;
+        }
+
+        #info_user_info_detail {
+            padding: 20px;
+            margin-left: 275px;
+            border-radius: 20px;
+            background-color: #D19C97;
+        }
+
+        .info_user_manager_detail ul li {
+            margin-bottom: 10px;
+            list-style: none;
+        }
+
+            .info_user_manager_detail ul li a {
+                text-decoration: none;
+                color: black;
+            }
+
+        .menu_profile {
+            display: none;
+        }
+
+            .menu_profile li {
+                list-style: none;
+            }
+
+                .menu_profile li a {
+                    margin-left: -20px;
+                    text-decoration: none;
+                    color: black;
+                }
+
+        .form_layout tr {
+            height: 55px;
+        }
+
+        .form_header h4 {
+            margin-top: -20px;
+            color: grey;
+        }
+
+        .info_user_manager_info h4 {
+            margin-top: -20px;
+            color: grey;
+        }
+
+        #info_user_manager {
+            top: 190px;
+            bottom: 5px;
+            position: fixed;
+            box-shadow: 2px 3px 3px 3px #000;
+            margin-right: 100px;
+            padding: 10px;
+            border-radius: 20px;
+        }
+
+        .orderInfoDetail {
+            margin: 0 auto;
+        }
+
+        .orderInfoSumit {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .orderInfoDetail tr {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .orderInfoDetail {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .orderInfoDetail_info td {
+            padding-bottom: 15px;
+        }
+
+        .orderInfo {
+            margin: 20px auto;
+            width: 80%;
+            background-color: whitesmoke;
+            padding: 20px;
+            box-shadow: 2px 3px 3px 3px #000;
+            border-radius: 20px;
+        }
+
+        .orderInfoSumit a {
+            padding: 10px;
+            background-color: black;
+            color: white;
+            text-decoration: none;
+        }
+
+        .ProInOrderDetail {
+            margin: 0 auto;
+        }
+
+            .ProInOrderDetail th {
+                padding-right: 80px;
+                text-align: left;
+            }
+
+    </style>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    @if (ViewBag.updateProfile != null)
+    {
+        <script>
+            swal({
+                title: "Cập nhật thành công",
+                icon: "success",
+                text: "Bạn đã cập nhật thông tin thành công!",
+                confirmButtonText: "Xác nhận"
+            });
+        </script>
+    }
+    @Html.Partial("Header")
+        <div id="info_user_info_detail" style="margin-top:200px;">
+        @if (user.RoleId == 1)
+        {
+            <a href="/Home/AdminPage" style="color: black; cursor:pointer;text-decoration:none;"><button>Back to AdminPage</button></a>
+        }
+        else
+        {
+            <a href="/Home/listProduct" style="color: black; cursor:pointer;text-decoration:none;"><button>Back to Home</button></a>
+        }
+
+            <div class="form_header">
+                <h2>My Profile</h2>
+                <h4>Manage and protect your account</h4>
+            </div>
+            <div class="form">
+                <form class="form_info" action="/Home/ProfileURL?uid=@user.UserId" method="post" style="border: 2px;">
+                    <table class="form_layout">
+                        <tr class="form_detail">
+                            <td class="input_title">UserName:</td>
+                            <td class="input_info">@user.UserName</br></td>
+                        </tr>
+                        <tr class="form_detail">
+                            <td class="input_title">Full Name:</td>
+                            <td class="input_info"><input type="text" value="@user.FullName" name="FullName" /></br></td>
+                        </tr>
+                        <tr class="form_detail">
+                            <td class="input_title">Address:</td>
+                            <td class="input_info"><input type="text" value="@user.Address" name="Address" /></br></td>
+                        </tr>
+                        <tr class="form_detail">
+                            <td class="input_title">Phone:</td>
+                            <td class="input_info"><input type="text" value="@user.Phone" name="Phone" /></br></td>
+                        </tr>
+                        <tr class="form_detail">
+                            <td class="input_title">Gender:</td>
+                            <td class="input_info_radio">
+                                <input type="radio" name="Gender" value="true" @(user.Gender==true?"checked":"") />Male
+                            <input type="radio" name="Gender" value="false" @(user.Gender == false ? "checked" : "") />Female
+                                </br>
+                            </td>
+                        </tr>
+                        <tr class="form_detail">
+                            <td class="input_title">Email:</td>
+                            <td class="input_info"><input type="text" value="@user.Email" name="Email" /></br></td>
+                        </tr>
+                    
+                        <tr class="button">
+                            <td></td>
+                            <td><input type="submit" value="Save" /></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

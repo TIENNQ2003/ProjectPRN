@@ -1,0 +1,152 @@
+﻿@using TratieShop.Models;
+@using Newtonsoft.Json;
+@{
+    var account = Context.Session.GetString("account");
+    User user = null;
+    if (!string.IsNullOrEmpty(account))
+    {
+        user = JsonConvert.DeserializeObject<User>(account);
+    }
+    TraTieShopContext context = new TraTieShopContext();
+    List<OrderDetail> orderDetails = ViewBag.Cart;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+    <style>
+        .placeOrder {
+            margin-top: 200px;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        .URLPlaceOrder {
+            padding: 3px;
+            border: 1px;
+            box-shadow: 1px 1px 1px 1px grey;
+        }
+
+            .URLPlaceOrder a {
+                font-size: 20px;
+                text-decoration: none;
+                font-weight: 600;
+                color: black;
+            }
+
+        .placeorderInfoForm {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .receiverInfo_detail {
+            margin-top: 20px;
+        }
+
+        .receiverInfo {
+            width: 50%;
+        }
+
+        .receiverInfo {
+            width: 45%;
+        }
+
+            .receiverInfo input {
+                margin-top: 10px;
+                padding: 5px;
+                width: 100%;
+            }
+
+        .oderInfo {
+            width: 45%;
+        }
+
+        .oldTotalPrice {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .Discount {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .totalPrice {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .submit {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+            .submit input {
+                padding: 10px 40px;
+                margin: 0 auto;
+                color: white;
+                background-color: black;
+            }
+    </style>
+</head>
+<body>
+    @Html.Partial("Header")
+    <div class="placeOrder">
+        <div class="URLPlaceOrder">
+            <a href="/Home/listProduct">Home</a>
+            <a href="/Home/Cart"> / Giỏ hàng</a>
+            <a> / Đặt hàng</a>
+        </div>
+        <div class="PlaceOrderTitle">
+            <h4><b style="font-size: 30px;">Thông tin đơn hàng</b></h4>
+        </div>
+        <div class="placeorderInfo">
+            <form action="/Home/PlaceOrder" method="post" class="placeorderInfoForm">
+                <div class="receiverInfo">
+                    <h4>Thông tin giao hàng </h4>
+                    <hr>
+                    <div class="receiverInfo_detail">
+                        Họ và tên người nhận hàng</br>
+                        <input name="name" type="text" value="@(user != null ? user.FullName : "")" />
+                    </div>
+                    <div class="receiverInfo_detail">
+                        Số điện thoại người nhận hàng</br>
+                        <input name="phone" type="text" value="@(user != null ? user.Phone : " ")" />
+                    </div>
+                    <div class="receiverInfo_detail">
+                        Ðịa chỉ nhận hàng</br>
+                        <input name="address" type="text" value="@(user != null ? user.Address : "")" />
+                    </div>
+                </div>
+                @{
+                    decimal sum = 0; // Initialize sum as decimal
+                }
+                @foreach (OrderDetail item in ViewBag.Cart)
+                {
+                    if (item.Product.UnitPrice != null) // Check if UnitPrice is not null
+                    {
+                        sum += item.Product.UnitPrice.Value; // Add UnitPrice to the sum
+                    }
+
+                }
+                <div class="oderInfo">
+                    <h4>Thông tin đơn hàng</h4>
+                    <hr>
+                    <div class="totalPrice" style="">
+                        <div class="">TOTAL PRICE</div>
+                        <div name="totalPriceAll">@sum</div>
+                        <input type="hidden" name="totalAmount" value="@sum" />
+                    </div>
+                    <button type="submit" class="btn">Place Order</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
+

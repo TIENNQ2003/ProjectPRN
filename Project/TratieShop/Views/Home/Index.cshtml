@@ -1,0 +1,318 @@
+﻿@using TratieShop.Models;
+@using Newtonsoft.Json;
+@{
+    var account = Context.Session.GetString("account");
+    User user=null;
+    if (!string.IsNullOrEmpty(account))
+    {
+        user = JsonConvert.DeserializeObject<User>(account);
+    }
+    List<Category> categories = ViewBag.Categories;
+    List<Product> products = ViewBag.Products;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="fonts/fontawesome-free-6.4.0-web/css/all.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+
+        .col-md-3 {
+            float: left;
+            width: 25%;
+        }
+
+        .col-md-9 {
+            float: left;
+            width: 75%;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .list-group {
+            list-style: none;
+            padding: 0;
+        }
+
+        .list-group-item {
+            border: 1px solid #ddd;
+            margin-bottom: -1px;
+        }
+
+            .list-group-item a {
+                text-decoration: none;
+                display: block;
+                padding: 10px;
+                color: #333;
+            }
+
+                .list-group-item a:hover {
+                    background-color: #f4f4f4;
+                }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .btn-primary {
+            background-color: #D19C97;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .btn-primary:hover {
+                background-color: #D19C97;
+           
+            }
+
+
+        #info_display {
+            display: flex;
+        }
+
+        #info_display_content {
+            width: 100%;
+        }
+
+            #info_display_content table {
+                width: 100%;
+                text-align: center;
+            }
+
+        .banner {
+            margin-top: 190px;
+            width: 100%;
+        }
+
+            .banner a {
+                display: block;
+            }
+
+        .mySlides {
+            width: 90%;
+            height: 500px;
+            margin: 0 auto;
+        }
+
+        #sub_header_right {
+            position: relative;
+        }
+
+        .menu_login {
+            position: absolute;
+            margin-top: 0px;
+            margin-left: 0px;
+            background-color: rgb(236, 233, 233);
+            display: none;
+            z-index: 2;
+        }
+
+            .menu_login li {
+                display: flex;
+                align-items: center;
+                margin-left: -40px;
+                border: 1px solid black;
+                box-sizing: border-box;
+                width: 150px;
+                height: 30px;
+            }
+
+                .menu_login li a {
+                }
+
+        #sub_header_right:hover .menu_login {
+            display: block;
+        }
+
+        #listProduct {
+            box-shadow: 3px 3px 3px 3px gainsboro;
+            padding: 3px;
+            border-radius: 20px;
+            margin-top: 3px;
+            margin-left: 5%;
+            margin-right: 5%;
+            font-family: arial;
+        }
+
+        .productHeader {
+            text-align: left;
+        }
+
+        .productInfo {
+            padding-left: 0px;
+            display: flex;
+            /*    justify-content: space-around;*/
+            flex-wrap: wrap;
+            list-style: none;
+        }
+
+            .productInfo li {
+                width: 20%;
+                margin-left: 4%;
+                text-align: center;
+                margin-bottom: 25px;
+                height: 350px;
+                border: 1px solid black;
+                border-radius: 20px;
+                box-shadow: 3px 3px 3px 3px rgb(236, 233, 233);
+            }
+
+                .productInfo li img {
+                    border-radius: 20px;
+                    padding: 10px;
+                    width: 200px;
+                    height: 200px;
+                }
+
+                .productInfo li a {
+                    text-decoration: none;
+                }
+
+                .productInfo li:hover {
+                    background: rgb(236, 233, 233);
+                }
+
+            .productInfo p {
+                margin: 5px;
+                color: blue;
+                font-size: 15px;
+                font-weight: 600;
+                color: black;
+                padding-bottom: 10px;
+            }
+
+            .productInfo .old {
+                font-size: 13px;
+                color: grey;
+            }
+
+            .productInfo .oldPrice {
+                font-size: 13px;
+            }
+
+            .productInfo .discount {
+                background-color: red;
+                margin-left: 3px;
+                padding: 2px;
+                font-size: 10px;
+                border: 1px solid red;
+                border-radius: 20px;
+                width: 10px;
+            }
+
+        .listProductSearch {
+            margin-top: 200px;
+        }
+
+        .activePage{
+            background-color: blue;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body>
+    @if (ViewBag.Message != null)
+    {
+        <script>
+            swal({
+                title: "Thêm vào giỏ hàng thành công",
+                icon: "success",
+                text: "Sản Phẩm đã được thêm vào giỏ hàng!",
+                confirmButtonText: "Xác nhận"
+            });
+        </script>
+    }
+    @if (ViewBag.OrderSucess!=null)
+    {
+        <script>
+            swal({
+                title: "Đặt hàng thành công",
+                icon: "success",
+                text: "Cảm ơn bạn đã đồng hành cùng chúng tôi !",
+                confirmButtonText: "Xác nhận"
+            });
+        </script>
+    }
+    @Html.Partial("Header")
+    <div id="listProduct" style="margin-top:200px;">
+        <div class="productHeader">
+            <h3>Sản phẩm bán chạy @ViewBag.Message</h3>
+        </div>
+        <ul class="productInfo">
+            @foreach (Product pro in (List<Product>)ViewData["products"])
+            {
+                <li>
+                    <img src="@pro.Image" />
+                    <p>@pro.ProductName</p>
+                    <p class="oldPrice">Gia goc: <span class="">@double.Parse(pro.UnitPrice.ToString()) VNĐ</span></p>
+                    @if (account == null)
+                    {
+                        <a class="btn-primary" href="/Home/login">Add to cart</a>
+                    }
+                    else
+                    {
+                        <a class="btn-primary" href="/Home/addToCart?proID=@pro.ProductId&cateID=@ViewBag.cateID">Add to cart</a>
+                    }
+                </li>
+            }
+        </ul>
+
+        <!-- Hiển thị phân trang -->
+        @if (ViewBag.TotalItems > ViewBag.PageSize)
+        {
+            <div class="pagination" style="margin-right: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: end;
+    align-items: end;">
+                @for (int i = 1; i <= Math.Ceiling((double)ViewBag.TotalItems / ViewBag.PageSize); i++)
+                {
+                    <a style="margin-right:5px;" class=" @(ViewBag.CurrentPage == i ? "activePage":"btn-primary")" href="/Home/listProduct?page=@i&cateID=@ViewData["cateID"]">@i</a>
+                }
+            </div>
+        }
+    </div>
+</body>
+</html>

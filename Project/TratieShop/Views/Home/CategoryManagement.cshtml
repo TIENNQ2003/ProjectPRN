@@ -1,0 +1,324 @@
+﻿@using TratieShop.Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>JSP Page</title>
+    <link rel="stylesheet" href="fonts/fontawesome-free-6.4.0-web/css/all.css">
+    <style>
+        .header_menu {
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
+
+        #header {
+            justify-content: space-around;
+            display: flex;
+            align-items: center;
+            background-color: rgb(236, 230, 222);
+        }
+
+        #header_left img {
+            width: 30%;
+            object-fit: cover;
+            border-radius: 50%;
+            margin: 5px 10px 5px 10px;
+        }
+
+        .slogan_name {
+            font-family: Harrington;
+        }
+
+        #header_left {
+            text-decoration: none;
+            color: black;
+            width: 30%;
+            display: flex;
+            align-items: center;
+        }
+
+        #header_middle button {
+            margin-left: -5px;
+            padding: 4px;
+            background-color: #E4DCD1;
+        }
+
+        #header_middle input {
+            width: 300px;
+            padding: 4px 50px 4px 0px;
+        }
+
+        #header_middle {
+            display: flex;
+            width: 30%;
+        }
+
+        #header_right i {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        #header_right {
+            margin-top: 10px;
+            width: 20%;
+        }
+
+            #header_right a {
+                text-decoration: none;
+                color: black;
+            }
+
+        #menu {
+            background-color: #E4DCD1;
+            max-width: 100%;
+        }
+
+        #main-menu {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+
+            #main-menu li a {
+                text-decoration: none;
+                color: black;
+                display: block;
+                padding: 10px 70px;
+            }
+
+            #main-menu li:hover {
+                background-color: rgb(236, 233, 233);
+            }
+
+            #main-menu li {
+                position: relative;
+            }
+
+        #edit_info {
+            position: fixed;
+            width: 200px;
+            height: 500px;
+            background-color: rgb(236, 230, 222);
+            list-style: none;
+            padding: 0;
+            margin-top: 12px;
+        }
+
+            #edit_info li a {
+                text-decoration: none;
+                color: black;
+                display: block;
+                padding: 15px 10px;
+                text-align: center;
+            }
+
+            #edit_info li:hover {
+                background-color: rgb(236, 233, 233);
+            }
+
+        #info_display {
+            margin-top: 172px;
+            display: flex;
+        }
+
+        #info_display_content {
+            margin-top: 10px;
+            margin-left: 220px;
+            width: 100%;
+        }
+
+            #info_display_content table {
+                width: 100%;
+                text-align: center;
+            }
+
+        #header_right ul li {
+            list-style: none;
+        }
+
+            #header_right ul li a {
+                text-decoration: none;
+            }
+
+        #header_right {
+            position: relative;
+        }
+
+        .menu_login {
+            position: absolute;
+            margin-top: 0px;
+            margin-left: 0px;
+            background-color: rgb(236, 233, 233);
+            display: none;
+            z-index: 2;
+        }
+
+            .menu_login li {
+                display: flex;
+                align-items: center;
+                margin-left: -40px;
+                border: 1px solid black;
+                box-sizing: border-box;
+                width: 150px;
+                height: 30px;
+            }
+
+                .menu_login li a {
+                }
+
+        #header_right:hover .menu_login {
+            display: block;
+        }
+
+        .headerSearch td {
+            text-align: left
+        }
+
+        #info_displayDetail {
+            border-radius: 20px;
+            padding: 20px 5%;
+            border: 1px solid black;
+            box-shadow: 3px 3px 3px 3px black;
+            width: 80%;
+            margin-top: 20px;
+            margin-left: 210px;
+        }
+
+        .info_displayDetailinFoUser tr td {
+            padding-bottom: 5px;
+        }
+
+        .ProInOrderDetail {
+            border-collapse: collapse;
+            border: 1px solid black;
+            width: 90%;
+            padding: 10px auto;
+            margin-top: 20px;
+        }
+
+            .ProInOrderDetail tr td, th {
+                padding: 5px;
+                border-bottom: 1px solid black;
+            }
+
+        .statisticOrder {
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+            .statisticOrder tr {
+                display: flex;
+                justify-content: space-around;
+            }
+
+        .statisticOrderDetail {
+            background-color: rgb(236, 233, 233);
+            width: 20%;
+            padding: 40px 0;
+            border: 1px solid black;
+            box-shadow: 3px 3px 3px 3px black;
+        }
+
+            .statisticOrderDetail a {
+                text-decoration: none;
+                color: black;
+            }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-danger:hover {
+                background-color: #bd2130;
+            }
+
+    </style>
+</head>
+<body>
+    @Html.Partial("HeaderAdmin");
+   
+        @{
+            List<Category> categories = ViewBag.Category;
+            }
+        <div class="container" style="margin-top:200px;">
+            <a href="/Home/InsertCategory" class="btn-danger">Insert Category</a>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tb_conten">
+                    @foreach (Category cate in categories)
+                    {
+                        <tr>
+                            <td>@cate.CategoryId</td>
+                            <td>@cate.CategoryName</td>
+                            <td>
+                                <a href="/Home/ViewCategoryDetail?cateId=@cate.CategoryId" class="btn-danger">View Detail</a>
+                                @* <a href="/Home/ViewOrderDetail?oId=@cate.CategoryId" class="btn-danger">Delete</a> *@
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+   
+</body>
+</html>

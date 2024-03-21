@@ -1,0 +1,135 @@
+﻿@using TratieShop.Models;
+@using Newtonsoft.Json;
+@{
+    List<OrderDetail> orderDetails = ViewBag.OrderDetails;
+}
+@{
+    var account = Context.Session.GetString("account");
+    User user = null;
+    if (!string.IsNullOrEmpty(account))
+    {
+        user = JsonConvert.DeserializeObject<User>(account);
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-secondary:hover {
+                background-color: #5a6268;
+            }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: #fff;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+            .btn-danger:hover {
+                background-color: #bd2130;
+            }
+    </style>
+</head>
+<body>
+    @Html.Partial("Header")
+    <div class="container" style="margin-top:200px;">
+        @if (user.RoleId == 2)
+        {
+            <a href="/Home/MyPurchaseURL">
+                <button class="btn-secondary">List Order</button>
+            </a>
+        }
+        else
+        {
+            <a href="/Home/AdminPage">
+                <button class="btn-secondary">List Order</button>
+            </a>
+        }
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th> ProductName</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>subTotalPrice</th>
+                </tr>
+            </thead>
+            @{
+                decimal sum = 0; // Initialize sum as decimal
+            }
+           
+            <tbody id="tb_content">
+                @foreach (var order in orderDetails)
+                {
+                    if (order.UnitPrice != null) // Check if UnitPrice is not null
+                    {
+                        sum += order.UnitPrice.Value; // Add UnitPrice to the sum
+                    }
+                    <tr>
+                        <td>@order.Product.ProductName</td>
+                        <td>@order.OrderId</td>
+                        <td>@order.UnitPrice</td>
+                        <td>@order.Quantity</td>
+                        <td>@(order.UnitPrice * order.Quantity)</td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><div >ToTal:</div></td>
+                    <td><div >@sum VNÐ</div></td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
